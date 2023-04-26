@@ -11,6 +11,7 @@ public enum NetworkError: Error {
     case parseData
     case emptyResource
     case reachability
+    case defaultError
 }
 public enum Webservice {
     @discardableResult
@@ -30,7 +31,7 @@ public enum Webservice {
         let request = URLRequest(url: url)
         let task = URLSession.shared.dataTask(with: request) { data, _, error in
             guard error == nil, let data = data else {
-                completion(.failure(error!))
+                completion(.failure(NetworkError.defaultError))
                 return
             }
             guard let result = resource.parse(data) else {
